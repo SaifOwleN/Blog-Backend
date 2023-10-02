@@ -11,8 +11,25 @@ const totalLikes = (blogs) => {
     x = i
     }
   };
-
   return blogs[x]
 }
-    module.exports = {dummy,totalLikes}
+
+const highestBlogs = (blogs) => {
+
+  let t = blogs.reduce((x,y)=>{
+    x[y.author] = (x[y.author] || 0) + 1
+    return x
+  },{}
+  )
+  let maxC = Math.max(...Object.values(t))
+  let mostF = Object.keys(t).filter((item) => {
+    return t[item] == maxC
+  })
+  
+  return {
+    author: mostF[0],
+    blogs: maxC
+  }
+}
+module.exports = {dummy,totalLikes,highestBlogs}
 
