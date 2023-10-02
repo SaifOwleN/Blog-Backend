@@ -77,4 +77,9 @@ describe('total likes', () => {
     const iGuess = listHelper.highestBlogs(blogs)
     expect(iGuess).toEqual({"author": "Robert C. Martin", "blogs": 3})
   })
+
+  test('Author with the most likes',()=>{
+    const iGuess = listHelper.mostLikedAuthor(blogs)
+    expect(iGuess).toEqual({"author": "Edsger W. Dijkstra", "likes": 17})
+  })
 })
