@@ -14,6 +14,11 @@ const blogSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  comments: [
+    {
+      type: String,
+    },
+  ],
   user: mongoose.Schema.Types.ObjectId,
 });
 

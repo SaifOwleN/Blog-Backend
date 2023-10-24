@@ -1,3 +1,4 @@
+const blogs = require("../models/blogs");
 const Blog = require("../models/blogs");
 const blogsRouter = require("express").Router();
 const User = require("../models/users");
@@ -58,6 +59,20 @@ blogsRouter.put("/:id", async (req, res) => {
   };
   const theBlog = await Blog.findByIdAndUpdate(req.params.id, blog);
   res.status(204).json(theBlog);
+});
+
+blogsRouter.post("/:id/comments", async (req, res) => {
+  const { comment } = req.body;
+  const Body = await Blog.findById(req.params.id);
+  const blog = {
+    title: Body.title,
+    author: Body.author,
+    url: Body.url,
+    likes: Body.likes,
+    comments: Body.comments.concat(comment),
+  };
+  const newBlog = await Blog.findByIdAndUpdate(req.params.id, blog);
+  res.status(204).json(newBlog);
 });
 
 module.exports = blogsRouter;
