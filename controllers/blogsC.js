@@ -21,10 +21,9 @@ blogsRouter.post("/", async (req, res) => {
   const user = req.user;
 
   const blog = new Blog({
-    title: Body.title,
-    author: Body.author,
-    url: Body.url,
+    content: Body.content,
     likes: Body.likes,
+    date: Body.date,
     user: user.id,
   });
 
@@ -40,10 +39,9 @@ blogsRouter.delete("/:id", async (request, response) => {
   const blogId = request.params.id;
 
   const user = request.user;
-
   const blog = await Blog.findById(blogId);
 
-  if (blog.user.toString() === user._id.toString()) {
+  if (blog.user.toString() == user._id.toString()) {
     await Blog.findByIdAndDelete(blogId);
     response.status(204).send("blog deleted").end();
   }
@@ -52,9 +50,9 @@ blogsRouter.delete("/:id", async (request, response) => {
 blogsRouter.put("/:id", async (req, res) => {
   const Body = req.body;
   const blog = {
-    title: Body.title,
-    author: Body.author,
-    url: Body.url,
+    content: Body.content,
+    likes: Body.likes,
+    date: Body.date,
     likes: Body.likes,
   };
   const theBlog = await Blog.findByIdAndUpdate(req.params.id, blog);
@@ -65,14 +63,19 @@ blogsRouter.post("/:id/comments", async (req, res) => {
   const { comment } = req.body;
   const Body = await Blog.findById(req.params.id);
   const blog = {
-    title: Body.title,
-    author: Body.author,
-    url: Body.url,
+    content: Body.content,
+    likes: Body.likes,
+    date: Body.date,
     likes: Body.likes,
     comments: Body.comments.concat(comment),
   };
   const newBlog = await Blog.findByIdAndUpdate(req.params.id, blog);
   res.status(204).json(newBlog);
+});
+
+blogsRouter.delete("/", async (req, res) => {
+  await Blog.deleteMany({});
+  res.status(201).json("all blogs have been deleted");
 });
 
 module.exports = blogsRouter;

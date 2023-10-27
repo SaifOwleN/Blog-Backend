@@ -1,5 +1,7 @@
 const User = require("../models/users");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const GridFsStorage = require("multer-gridfs-storage");
 
 const tokenExtractor = (req, res, next) => {
   const auth = req.get("Authorization");
@@ -17,11 +19,9 @@ const userExtractor = async (req, res, next) => {
   }
 
   const decodedToken = jwt.verify(Token, process.env.SECRET);
-
   if (!decodedToken) {
     return response.status(401).json({ error: "Token invalid" });
   }
-
   const user = await User.findById(decodedToken.id);
   req["user"] = user;
   next();
