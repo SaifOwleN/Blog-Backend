@@ -1,7 +1,5 @@
 const User = require("../models/users");
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
-const GridFsStorage = require("multer-gridfs-storage");
 
 const tokenExtractor = (req, res, next) => {
   const auth = req.get("Authorization");
