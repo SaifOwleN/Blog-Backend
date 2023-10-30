@@ -23,7 +23,13 @@ loginRouter.post("/", async (req, res) => {
 
   res
     .status(200)
-    .json({ Token, username: user.username, name: user.name, id: user._id });
+    .json({
+      Token,
+      username: user.username,
+      name: user.name,
+      id: user._id,
+      img: user.img,
+    });
 });
 
 module.exports = loginRouter;
