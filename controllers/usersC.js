@@ -42,8 +42,14 @@ userRouter.post("/", async (req, res) => {
 
 userRouter.put("/:id", async (req, res) => {
   const Body = req.body;
-  const user = await User.findByIdAndUpdate(req.params.id, Body);
-  res.status(201).json(user);
+  if (Body.username.length < 3 || Body.password.length < 5) {
+    return res.status(400).json({ error: "username or password is too short" });
+  }
+  const passwordHash = await bcrypt.hash(Body.password, 10);
+  const user = { ...Body, passwordHash };
+  console.log("user", user);
+  const newUser = await User.findByIdAndUpdate(req.params.id, user);
+  res.status(201).json(newUser);
 });
 
 module.exports = userRouter;
