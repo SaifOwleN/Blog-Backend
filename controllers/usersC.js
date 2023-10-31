@@ -46,7 +46,7 @@ userRouter.put("/:id", async (req, res) => {
   for (var k in Body) {
     if (Body[k] < 5) {
       return res
-        .status(400)
+        .status(406)
         .json({ error: "username or password is too short" });
     }
   }

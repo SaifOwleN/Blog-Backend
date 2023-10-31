@@ -20,19 +20,24 @@ blogsRouter.post("/", async (req, res) => {
 
   const user = req.user;
 
-  const blog = new Blog({
-    content: Body.content,
-    likes: Body.likes,
-    date: Body.date,
-    user: user.id,
-  });
+  if (!Body.content) {
+    res.status(406).json("no content written");
+  } else {
+    const blog = new Blog({
+      content: Body.content,
+      likes: Body.likes,
+      date: Body.date,
+      img: Body.img,
+      user: user.id,
+    });
 
-  const result = await blog.save();
+    const result = await blog.save();
 
-  user.blogs = user.blogs.concat(result._id);
-  await user.save();
+    user.blogs = user.blogs.concat(result._id);
+    await user.save();
 
-  res.status(201).json(result);
+    res.status(201).json(result);
+  }
 });
 
 blogsRouter.delete("/:id", async (request, response) => {

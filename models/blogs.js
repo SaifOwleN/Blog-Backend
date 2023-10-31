@@ -16,6 +16,7 @@ const blogSchema = new mongoose.Schema({
     },
   ],
   date: { type: String },
+  img: { type: String },
   user: mongoose.Schema.Types.ObjectId,
 });
 
