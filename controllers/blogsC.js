@@ -79,7 +79,7 @@ blogsRouter.post("/:id/comments", async (req, res) => {
 });
 
 blogsRouter.delete("/", async (req, res) => {
-  await Blog.deleteMany({});
+  await Blog.updateMany({}, { $unset: { comments: 1 } });
   res.status(201).json("all blogs have been deleted");
 });
 

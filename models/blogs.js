@@ -5,14 +5,22 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  likes: {
-    type: Number,
-    default: 0,
-  },
-  comments: [
+  likes: [
     {
       type: String,
       required: true,
+    },
+  ],
+  comments: [
+    {
+      user: {
+        type: String,
+        required: true,
+      },
+      content: {
+        type: String,
+        required: true,
+      },
     },
   ],
   date: { type: String },
