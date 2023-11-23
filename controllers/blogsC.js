@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 blogsRouter.get("/", async (request, response) => {
   const blog = await Blog.find({});
   response.json(blog);
-  console.log("blog", blog);
 });
 
 blogsRouter.get("/:id", async (req, res) => {
@@ -74,13 +73,45 @@ blogsRouter.post("/:id/comments", async (req, res) => {
     likes: Body.likes,
     comments: Body.comments.concat(comment),
   };
-  const newBlog = await Blog.findByIdAndUpdate(req.params.id, blog);
-  res.status(204).json(newBlog);
+  try {
+    const newBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
+      runValidators: true,
+    });
+    res.status(204).json(newBlog);
+  } catch (err) {
+    console.error(err);
+    res.status(422).json(err);
+  }
+});
+
+blogsRouter.delete("/sdsad", async (req, res) => {
+  await Blog.updateMany({}, { $unset: { comments: 1 } });
+  res.status(201).json("all comments have been deleted");
 });
 
 blogsRouter.delete("/", async (req, res) => {
-  await Blog.updateMany({}, { $unset: { comments: 1 } });
-  res.status(201).json("all blogs have been deleted");
+  await Blog.updateMany({}, { $unset: { likes: 1 } });
+  res.status(201).json("all likes have been deleted");
+});
+
+blogsRouter.get("/:id/comments", async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+  res.status(201).json(blog.comments);
+});
+
+blogsRouter.put("/:id/comments/:commentId", async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+  const comment = req.body;
+  const comments = blog.comments.filter(
+    (item) => item._id != req.params.commentId,
+  );
+  console.log(comments);
+  const conc = comments.concat(comment);
+  const updatedBlog = {
+    comments: conc,
+  };
+  const xdd = await Blog.findByIdAndUpdate(req.params.id, updatedBlog);
+  res.status(200).json(updatedBlog);
 });
 
 module.exports = blogsRouter;
