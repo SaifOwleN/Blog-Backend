@@ -12,8 +12,7 @@ const config = require("./utils/config");
 const middleware = require("./utils/middleware");
 
 mongoose.connect(config.mongoUrl);
-
-    logger.info("connecting to", config.mongoUrl);    
+logger.info("connecting to", config.mongoUrl);
 app.use(cors());
 app.use(express.json());
 app.use(middleware.tokenExtractor);

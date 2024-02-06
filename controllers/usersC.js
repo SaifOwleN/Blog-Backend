@@ -28,6 +28,7 @@ userRouter.post("/", async (req, res) => {
   });
 
   const user = await newUser.save();
+  console.log(user);
 
   const userForToken = {
     username: user.username,
@@ -37,7 +38,13 @@ userRouter.post("/", async (req, res) => {
 
   res
     .status(201)
-    .json({ Token, username: user.username, name: user.name, id: user._id });
+    .json({
+      Token,
+      username: user.username,
+      name: user.name,
+      id: user._id,
+      img: user.img,
+    });
 });
 
 userRouter.put("/:id", async (req, res) => {
